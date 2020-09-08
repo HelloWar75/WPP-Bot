@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const func = (credential_name = "credential_01.json", path_credentials = '') => {
+module.exports = (credential_name = "credential_01.json", path_credentials = '') => {
 
     if (path_credentials.length < 1) {
         path_credentials = global.base_credentials_path;
@@ -13,6 +13,4 @@ const func = (credential_name = "credential_01.json", path_credentials = '') => 
         return require(credential_file);
     }
 
-}
-
-module.exports = func;
+};

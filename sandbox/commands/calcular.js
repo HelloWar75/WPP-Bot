@@ -2,6 +2,6 @@ module.exports = {
     name: 'ping',
     description: 'Ping!',
     execute(message, args) {
-        console.log("calculo");
+        console.log(message, args);
     },
 };

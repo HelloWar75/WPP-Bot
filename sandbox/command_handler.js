@@ -8,7 +8,6 @@ let registred_commands = {};
 
 for ( const file of command_files ) {
     const command = require(path.join(commands_path, file));
-
     registred_commands[command.name] = command;
 }
 
@@ -20,6 +19,7 @@ if( msg.startsWith('!') ) {
 
     if( command_name in registred_commands ) {
         // Executar ações
+        registred_commands[command_name].execute(msg, command_args);
     }else{
         // Devolver erro ao cliente
     }

@@ -1,29 +1,41 @@
 const load_credential = require('./helpers/load_credential');
-const LoadCredential = require('./helpers/load_credential.js');
 const { Client } = require('whatsapp-web.js');
+const CommandListener = require('./listeners/CommandListener.js');
 
-class Core {
 
-    client = null;
-    credentials = null;
+class Core extends Client {
+
+    static commandListener;
 
     constructor(client_options = null) {
-        // Carregar credencias
-        this.credentials = LoadCredential();
+        let options = {};
+
         if (client_options == null) {
-            this.client = new Client({
+            let credentials = load_credential();
+            options = {
                 puppeteer: {
                     headless: true
                 },
-                session: this.credentials
-            });
-        } else {
-            this.client = new Client(client_options);
+                session: credentials
+            };
+        }else{
+            options = {}
         }
+
+        Core.commandListener = new CommandListener();
+
+        super(options);
     }
 
-    start() {
-        this.client.initialize();
+    async initialize() {
+
+        this.addListener('message', Core.commandListener.listen);
+
+        this.addListener('ready', () => {
+            console.log('Cliente Pronto!');
+        })
+
+        return super.initialize();
     }
 
 }
